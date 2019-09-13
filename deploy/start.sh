@@ -267,7 +267,7 @@ function exit_catch {
 # Switch current execution directory to WORKDIR (BASEPATH)
 in_basepath
 # Installing PHP Composer and packages
-composer_install
+## composer_install
 
 # Flushing Magento configuration in Redis
 magento_flush_config
