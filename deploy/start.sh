@@ -232,7 +232,7 @@ function magento_compile {
   if [[ $MAGENTO_MODE = "production" ]]; then
     echo "${blue}${bold}Generating DI and assets${normal}"
     bin/magento setup:di:compile
-    bin/magento setup:static-content:deploy
+    bin/magento setup:static-content:deploy -f en_US
   fi
 }
 
@@ -262,6 +262,12 @@ function exit_catch {
   exit ${LAST_EXIT_CODE}
 }
 
+function custom_development_deploy {
+  rm -rf pub/static/*
+  bin/magento setup:di:compile
+  bin/magento setup:static-content:deploy -f en_US
+}
+
 ### Deploy pipe start
 
 # Switch current execution directory to WORKDIR (BASEPATH)
@@ -270,32 +276,34 @@ in_basepath
 ## composer_install
 
 # Flushing Magento configuration in Redis
-magento_flush_config
-# Setting magento database credentials
-magento_database_config
-# Configuring Magento to use Varnish as HTTP cache
-magento_varnish_endpoint
-# Executing Magento install or migration
-magento_database_migration
-# Configuring Magento to use Redis for session and config storage
-magento_redis_config
-# Configure Magento to flush varnish
-magento_varnish_config
-# Create admin user if not exists
-create_admin_user
+# magento_flush_config
+# # Setting magento database credentials
+# magento_database_config
+# # Configuring Magento to use Varnish as HTTP cache
+# magento_varnish_endpoint
+# # Executing Magento install or migration
+# magento_database_migration
+# # Configuring Magento to use Redis for session and config storage
+# magento_redis_config
+# # Configure Magento to flush varnish
+# magento_varnish_config
+# # Create admin user if not exists
+# create_admin_user
 
-# Set magento mode
-magento_set_mode
-# Pwa thme install
-pwa_theme_install
-# Static content deploy and DI compile, only in production mode
-magento_compile
+# # Set magento mode
+# magento_set_mode
+# # Pwa thme install
+# pwa_theme_install
+# # Static content deploy and DI compile, only in production mode
+# magento_compile
 
-# Set magento baseurl and secure_baseurl
-magento_set_baseurl
+# # Set magento baseurl and secure_baseurl
+# magento_set_baseurl
+
+# custom_development_deploy
 
 # Appling correct folder permissions
-magento_fix_permissions
+# magento_fix_permissions
 # Flushing all caches, removing maintenance mode
 magento_post_deploy
 
